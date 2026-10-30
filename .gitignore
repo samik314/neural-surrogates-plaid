@@ -1,0 +1,37 @@
+# Data, caches, run outputs (CC-BY-SA data never goes in git).
+# Leading "/" = repo root only. A bare "data/" would also ignore the src/plaid_surrogates/data/
+# package (tests/test_paths.py guards against that).
+# Exception (approved 2026-10-05): data/splits/*.json is committed (tiny, reproducibility-critical).
+/data/*
+!/data/splits/
+/data/splits/*
+!/data/splits/*.json
+/runs/
+# Cluster job scripts and Slurm logs live at WORKSPACE_ROOT, outside the clone; ignored here as a safety net
+/sbatch_files/
+/logs/
+/errors/
+*.pkl
+*.pt
+*.ckpt
+*.npz
+*.mdlus
+
+# Private notes
+docs/internal/
+
+# Environment / machine-specific
+.env
+.venv/
+slurm-*.out
+
+# Python / tooling
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store

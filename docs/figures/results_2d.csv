@@ -1,0 +1,18 @@
+# 2D_MultiScHypEl results behind docs/figures/*.png (scripts/make_figures.py).
+# kind=ablation: dev total_error, mean and std over 3 seeds (ensemble: one value); adopted path only.
+# kind=board: public-leaderboard total_error (public test subset), as listed on 2026-10-30; ours=1 for this repository's entries.
+kind,label,value,std,ours
+ablation,Input scalars only (no geometry),0.1040,0.0015,0
+ablation,+ geometry features,0.0340,0.0022,0
+ablation,+ second-nearest-hole distance,0.0323,0.0013,0
+ablation,+ metric-consistent loss,0.0295,0.0006,0
+ablation,slices 32 -> 64,0.0270,0.0002,0
+ablation,slices 64 -> 128,0.0251,0.0003,0
+ablation,slices 128 -> 256 (final config),0.0243,0.0004,1
+ablation,3-seed ensemble of the final config,0.0222,,1
+board,MARIO,0.0573,,0
+board,Vi-Transformer,0.0325,,0
+board,FNO,0.0302,,0
+board,This repo: single model,0.0242,,1
+board,Augur,0.0221,,0
+board,This repo: 3-model ensemble,0.0219,,1

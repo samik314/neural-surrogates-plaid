@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it as below. If you use the PLAID
+  datasets, please also cite the PLAID paper (arXiv:2505.02974).
+title: "neural-surrogates-plaid: Transolver neural surrogates on the PLAID benchmarks"
+type: software
+authors:
+  - family-names: Mukhopadhyay
+    given-names: Samik
+version: 0.1.0
+date-released: "2026-10-30"
+license: MIT
+repository-code: "https://github.com/samik314/neural-surrogates-plaid"
+keywords:
+  - neural operators
+  - Transolver
+  - surrogate modeling
+  - solid mechanics
+  - hyperelasticity
+  - finite element
+  - PLAID

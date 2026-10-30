@@ -1,0 +1,31 @@
+# Probe: Transolver++ (plus: true). Parent: _geoligmls256. One seed: dev 0.0251. Not adopted. Note:
+# PhysicsNeMo 2.1.1 samples Gumbel noise in eval mode too, so its predictions are not deterministic.
+# Every key is required (config.py loads strictly).
+dataset: 2D_MultiScHypEl
+tag: geoligmls256pp
+precision: fp32
+device: null         # null -> PLAID_DEVICE, else cuda -> mps -> cpu
+eval_every: 5        # exact dev total_error every 5 epochs and after the last
+features: input_scalars+tags+dist+lig
+loss: metric  # losses.py: standardized_mse | metric
+scalars:             # RVE average of psi: dev 0.0177 on reference psi vs 0.1117 training mean
+  effective_energy: RVE average of psi
+
+model:               # physicsnemo Transolver; coordinates go in the embedding, never in fx
+  n_layers: 4
+  n_hidden: 128
+  n_head: 4
+  slice_num: 256
+  mlp_ratio: 4
+  dropout: 0.0
+  act: gelu
+  plus: true
+  use_te: false
+
+optim:
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  epochs: 200
+  grad_accum: 4      # batch size is 1 full mesh; effective batch 4 meshes
+  schedule: cosine
+  grad_clip: 1.0

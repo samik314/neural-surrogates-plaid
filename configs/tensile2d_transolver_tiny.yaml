@@ -1,0 +1,33 @@
+# Tensile2d, tiny Transolver trained for a few epochs: an end-to-end smoke test of
+# train -> predict -> metrics -> run folder. Not tuned; its score is not a result.
+# Every key is required (config.py loads strictly).
+dataset: Tensile2d
+tag: tiny            # run folder: <stamp>_Tensile2d_transolver_tiny_s<seed>
+precision: fp32      # fp32 first: bf16 was slower at this model size (DSG-001)
+device: null         # null -> PLAID_DEVICE, else cuda -> mps -> cpu
+eval_every: 1        # exact dev total_error (metrics.py, physical units, float64) every epoch
+features: input_scalars   # data/features.py
+loss: standardized_mse  # losses.py: standardized_mse | metric
+scalars:             # per scored scalar: "training mean" or an identity (scalars.py)
+  max_von_mises: training mean
+  max_U2_top: training mean
+  max_sig22_top: training mean
+
+model:               # physicsnemo Transolver; coordinates go in the embedding, never in fx
+  n_layers: 2
+  n_hidden: 64
+  n_head: 4
+  slice_num: 16
+  mlp_ratio: 4
+  dropout: 0.0
+  act: gelu
+  plus: false        # true = Transolver++
+  use_te: false      # Transformer Engine is not installed
+
+optim:
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  epochs: 3
+  grad_accum: 4      # batch size is 1 full mesh; effective batch 4 meshes
+  schedule: cosine   # per optimizer update, from lr to 0
+  grad_clip: 1.0

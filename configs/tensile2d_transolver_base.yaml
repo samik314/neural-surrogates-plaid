@@ -1,0 +1,33 @@
+# Tensile2d baseline: Transolver on full meshes, input scalars as features; scalars from exact
+# nodal identities (docs/methods.md §4). 3 seeds: dev 0.0049 ± 0.0003; leaderboard 0.0054.
+# Every key is required (config.py loads strictly).
+dataset: Tensile2d
+tag: base            # run folder: <stamp>_Tensile2d_transolver_base_s<seed>
+precision: fp32      # bf16 was slower than fp32 at this model size on an A6000 (2026-09-30)
+device: null         # null -> PLAID_DEVICE, else cuda -> mps -> cpu
+eval_every: 5        # exact dev total_error every 5 epochs and after the last
+features: input_scalars   # data/features.py
+loss: standardized_mse  # losses.py: standardized_mse | metric
+scalars:             # best per scalar on dev (scalar_options_rrmse of run 20261005-1900_..._s0)
+  max_von_mises: max VM over nodes, plane stress   # 0.012 vs training mean 0.2415
+  max_U2_top: max(U2) over Top
+  max_sig22_top: -P
+
+model:               # physicsnemo Transolver; coordinates go in the embedding, never in fx
+  n_layers: 4
+  n_hidden: 128
+  n_head: 4
+  slice_num: 32
+  mlp_ratio: 4
+  dropout: 0.0
+  act: gelu
+  plus: false        # true = Transolver++
+  use_te: false      # Transformer Engine is not installed
+
+optim:
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  epochs: 200
+  grad_accum: 4      # batch size is 1 full mesh; effective batch 4 meshes
+  schedule: cosine   # per optimizer update, from lr to 0
+  grad_clip: 1.0
